@@ -2,7 +2,6 @@ package com.project.college_portal.dao;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -78,7 +77,7 @@ public class StaffDao implements StaffInterface {
 		List<UserPojo> userPojo = jdbcTemplate.query(selectStaff, new ApprovingMapper());
 		List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == (staffId))
 				.filter(roll -> roll.getRoll().equals(staff)).filter(status -> status.getStatus().equals(approved))
-				.collect(Collectors.toList());
+				.toList();
 		for (UserPojo userModel : user1) {
 			if (userModel != null) {
 				return 0;
@@ -111,14 +110,14 @@ public class StaffDao implements StaffInterface {
 		List<UserPojo> userPojo = jdbcTemplate.query(selectStaff, new ApprovingMapper());
 		List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == (staffId))
 				.filter(roll -> roll.getRoll().equals(staff)).filter(status -> status.getStatus().equals(approved))
-				.collect(Collectors.toList());
+				.toList();
 		for (UserPojo userModel : user1) {
 			if (userModel != null) {
 
 				String select = selectIdRollStatus;
 				List<UserPojo> user2 = jdbcTemplate.query(select, new ApprovingMapper());
 				List<UserPojo> user3 = user2.stream().filter(id -> id.getUserId() == (approveUser.getUserId()))
-						.filter(roll1 -> roll1.getRoll().equals(student)).collect(Collectors.toList());
+						.filter(roll1 -> roll1.getRoll().equals(student)).toList();
 				for (UserPojo userModel2 : user3) {
 					if (userModel2 != null) {
 						String approve = "update user set status='approved'  where (roll='student' and id=?)";
@@ -139,14 +138,14 @@ public class StaffDao implements StaffInterface {
 		List<UserPojo> userPojo = jdbcTemplate.query(selectStaff, new ApprovingMapper());
 		List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == (staffId))
 				.filter(roll -> roll.getRoll().equals(staff)).filter(status -> status.getStatus().equals(approved))
-				.collect(Collectors.toList());
+				.toList();
 		for (UserPojo userModel : user1) {
 			if (userModel != null) {
 
 				String select = selectIdRollStatus;
 				List<UserPojo> user2 = jdbcTemplate.query(select, new ApprovingMapper());
 				List<UserPojo> user3 = user2.stream().filter(id -> id.getUserId() == (approveUser.getUserId()))
-						.filter(roll1 -> roll1.getRoll().equals(student)).collect(Collectors.toList());
+						.filter(roll1 -> roll1.getRoll().equals(student)).toList();
 				for (UserPojo userModel2 : user3) {
 					if (userModel2 != null) {
 						String approve = "update user set status='not approved'  where (roll='student' and id=?)";
@@ -166,7 +165,7 @@ public class StaffDao implements StaffInterface {
 		String select = "select id,first_name,last_name,dob,gender,phone_number,email,password,roll,department,parent_name,year_of_joining,semester,status,image,is_active from user where (roll='student' and status='approved' and is_active =true)";
 		List<UserPojo> userList = jdbcTemplate.query(select, new UserMapper());
 		List<UserPojo> userList1 = userList.stream().filter(semester -> semester.getSemester() > 0)
-				.collect(Collectors.toList());
+				.toList();
 
 		ObjectMapper object = new ObjectMapper();
 		String user = object.writeValueAsString(userList1);
@@ -184,10 +183,10 @@ public class StaffDao implements StaffInterface {
 		List<UserPojo> userPojo = jdbcTemplate.query(select, new ApprovingMapper());
 		List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == (userPojos.getUserId()))
 				.filter(roll1 -> roll1.getRoll().equals(student)).filter(isActive -> isActive.isActive() == (true))
-				.collect(Collectors.toList());
+				.toList();
 		List<UserPojo> user2 = userPojo.stream().filter(id -> id.getUserId() == (userPojos.getUserId()))
 				.filter(roll1 -> roll1.getRoll().equals(student)).filter(isActive -> isActive.isActive() == (false))
-				.collect(Collectors.toList());
+				.toList();
 		for (UserPojo userModel1 : user1) {
 			if (userModel1 != null) {
 				String deactivate = "update user set is_active = false  where (roll='student' and id=?)";
@@ -220,14 +219,14 @@ public class StaffDao implements StaffInterface {
 		List<UserPojo> userPojo = jdbcTemplate.query(selectStaff, new ApprovingMapper());
 		List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == (staffId))
 				.filter(roll -> roll.getRoll().equals(staff)).filter(status -> status.getStatus().equals(approved))
-				.collect(Collectors.toList());
+				.toList();
 		for (UserPojo userModel : user1) {
 			if (userModel != null) {
 				String name = departmentPojo.getDepartment();
 				String select = selectdepartment;
 				List<DepartmentPojo> department1 = (jdbcTemplate.query(select, new DepartmentMapper())).stream()
 						.filter(dep -> ((dep.getDepartment()).toLowerCase()).equals((name).toLowerCase()))
-						.collect(Collectors.toList());
+						.toList();
 				for (DepartmentPojo departmentModel1 : department1) {
 					if (departmentModel1 != null) {
 						throw new ExistDepartmentNameException("Exist Department Exception");
@@ -250,10 +249,10 @@ public class StaffDao implements StaffInterface {
 		List<DepartmentPojo> department = jdbcTemplate.query(select, new DepartmentMapper());
 		List<DepartmentPojo> department1 = department.stream()
 				.filter(dep -> dep.getDepartment().equals(departmentPojo.getDepartment()))
-				.filter(isActive -> isActive.isIsActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isIsActive() == (true)).toList();
 		List<DepartmentPojo> department2 = department.stream()
 				.filter(dep -> dep.getDepartment().equals(departmentPojo.getDepartment()))
-				.filter(isActive -> isActive.isIsActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isIsActive() == (false)).toList();
 		for (DepartmentPojo departmentModel1 : department1) {
 			if (departmentModel1 != null) {
 				String deactivate = "update classroom set is_active =false where department=?";
@@ -297,7 +296,7 @@ public class StaffDao implements StaffInterface {
 		String select1 = selectIdRollStatus;
 		List<UserPojo> userPojo = (jdbcTemplate.query(select1, new ApprovingMapper())).stream()
 				.filter(id -> id.getUserId() == userId).filter(roll1 -> roll1.getRoll().equals(student))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		for (UserPojo userModel1 : userPojo) {
 			if (userModel1 != null) {
 
@@ -306,7 +305,7 @@ public class StaffDao implements StaffInterface {
 				List<AttendancePojo> attendanceList1 = attendanceList.stream()
 						.filter(userid -> userid.getUserId() == (userId))
 						.filter(semesterid -> semesterid.getSemester() == (semester))
-						.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+						.filter(isActive -> isActive.isActive() == (true)).toList();
 				for (AttendancePojo attendanceModel1 : attendanceList1) {
 					if (attendanceModel1 != null) {
 						int daysAttended = attendanceModel1.getDaysAttended() + 1;
@@ -342,7 +341,7 @@ public class StaffDao implements StaffInterface {
 		String select1 = selectIdRollStatus;
 		List<UserPojo> userPojo = (jdbcTemplate.query(select1, new ApprovingMapper())).stream()
 				.filter(id -> id.getUserId() == userId).filter(roll1 -> roll1.getRoll().equals(student))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		for (UserPojo userModel1 : userPojo) {
 			if (userModel1 != null) {
 
@@ -351,7 +350,7 @@ public class StaffDao implements StaffInterface {
 				List<AttendancePojo> attendanceList1 = attendanceList.stream()
 						.filter(userid -> userid.getUserId() == (userId))
 						.filter(semesterid -> semesterid.getSemester() == (semester))
-						.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+						.filter(isActive -> isActive.isActive() == (true)).toList();
 				for (AttendancePojo attendanceModel1 : attendanceList1) {
 					if (attendanceModel1 != null) {
 						int daysAttended = attendanceModel1.getDaysAttended();
@@ -388,10 +387,10 @@ public class StaffDao implements StaffInterface {
 		List<AttendancePojo> attendanceList = jdbcTemplate.query(select, new AttendanceMapper());
 		List<AttendancePojo> attendanceList1 = attendanceList.stream()
 				.filter(userid -> userid.getUserId() == (attendancePojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<AttendancePojo> attendanceList2 = attendanceList.stream()
 				.filter(userid -> userid.getUserId() == (attendancePojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (AttendancePojo attendanceModel1 : attendanceList1) {
 			if (attendanceModel1 != null) {
 				String deactivate = "update attendance set is_active =false where user_id=?";
@@ -427,7 +426,7 @@ public class StaffDao implements StaffInterface {
 		int semesterId = semesterPojo.getId();
 		String select = selectSemester;
 		List<SemesterPojo> semester1 = (jdbcTemplate.query(select, new SemesterMapper())).stream()
-				.filter(id -> ((id.getId()) == (semesterId))).collect(Collectors.toList());
+				.filter(id -> ((id.getId()) == (semesterId))).toList();
 		for (SemesterPojo semesterModel1 : semester1) {
 			if (semesterModel1 != null) {
 				throw new ExistSemesterIdException("Exist Semester Exception");
@@ -447,9 +446,9 @@ public class StaffDao implements StaffInterface {
 		String select = selectSemester;
 		List<SemesterPojo> semester = jdbcTemplate.query(select, new SemesterMapper());
 		List<SemesterPojo> semester1 = semester.stream().filter(id -> id.getId() == (semesterPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<SemesterPojo> semester2 = semester.stream().filter(id -> id.getId() == (semesterPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (SemesterPojo semesterModel1 : semester1) {
 			if (semesterModel1 != null) {
 				String deactivate = updateSemesterDeactivate;
@@ -541,7 +540,7 @@ public class StaffDao implements StaffInterface {
 		String select = selectSemester;
 		List<SemesterPojo> semesterPojo = jdbcTemplate.query(select, new SemesterMapper());
 		List<SemesterPojo> semester1 = semesterPojo.stream().filter(id -> id.getId() == (semesterId))
-				.collect(Collectors.toList());
+				.toList();
 		for (SemesterPojo semesterModel1 : semester1) {
 			if (semesterModel1 != null) {
 
@@ -549,7 +548,7 @@ public class StaffDao implements StaffInterface {
 				String select1 = selectdepartment;
 				List<DepartmentPojo> depart = jdbcTemplate.query(select1, new DepartmentMapper());
 				List<DepartmentPojo> department1 = depart.stream().filter(dep -> dep.getDepartment().equals(department))
-						.collect(Collectors.toList());
+						.toList();
 				for (DepartmentPojo departmentModel1 : department1) {
 					if (departmentModel1 != null) {
 
@@ -558,7 +557,7 @@ public class StaffDao implements StaffInterface {
 						List<SubjectPojo> sub = jdbcTemplate.query(select2, new SubjectMapper());
 						List<SubjectPojo> subjectName1 = sub.stream().filter(name -> name.getName().equals(subjectName))
 								.filter(dep -> dep.getDepartment().equals(department))
-								.filter(sem -> sem.getSemesterId() == (semesterId)).collect(Collectors.toList());
+								.filter(sem -> sem.getSemesterId() == (semesterId)).toList();
 						for (SubjectPojo subjectModel1 : subjectName1) {
 							if (subjectModel1 != null) {
 								throw new ExistSubjectNameException("Subject Alredy exist");
@@ -588,9 +587,9 @@ public class StaffDao implements StaffInterface {
 		String select = selectSubjects;
 		List<SubjectPojo> subject = jdbcTemplate.query(select, new SubjectMapper());
 		List<SubjectPojo> subject1 = subject.stream().filter(id -> id.getId().equals(subjectPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<SubjectPojo> subject2 = subject.stream().filter(id -> id.getId().equals(subjectPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (SubjectPojo subjectModel1 : subject1) {
 			if (subjectModel1 != null) {
 				String deactivate = "update subjects set is_active =false where id=?";
@@ -674,14 +673,14 @@ public class StaffDao implements StaffInterface {
 		String select = selectSubjects;
 		List<SubjectPojo> subjectPojo = jdbcTemplate.query(select, new SubjectMapper());
 		List<SubjectPojo> subject1 = subjectPojo.stream().filter(id -> id.getId().equals(subjectId))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		for (SubjectPojo subjectModel1 : subject1) {
 			if (subjectModel1 != null) {
 				String select1 = selectExam;
 				List<ExamPojo> exam1 = jdbcTemplate.query(select1, new ExamMapper());
 				List<ExamPojo> exam2 = exam1.stream().filter(subjectid -> (subjectid.getSubjectId()).equals(subjectId))
 						.filter(name -> name.getName().equals(examPojo.getName()))
-						.filter(type -> type.getType().equals(examPojo.getType())).collect(Collectors.toList());
+						.filter(type -> type.getType().equals(examPojo.getType())).toList();
 				for (ExamPojo examModel1 : exam2) {
 					if (examModel1 != null) {
 						throw new ExistExamException("Exist Exam Exception");
@@ -704,9 +703,9 @@ public class StaffDao implements StaffInterface {
 		String select = selectExam;
 		List<ExamPojo> exam = jdbcTemplate.query(select, new ExamMapper());
 		List<ExamPojo> exam1 = exam.stream().filter(id -> id.getId() == (examPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<ExamPojo> exam2 = exam.stream().filter(id -> id.getId() == (examPojo.getId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (ExamPojo examModel1 : exam1) {
 			if (examModel1 != null) {
 				String deactivate = "update exam set is_active =false where id=?";
@@ -766,7 +765,7 @@ public class StaffDao implements StaffInterface {
 		String select = selectExam;
 		List<ExamPojo> examPojo = jdbcTemplate.query(select, new ExamMapper());
 		List<ExamPojo> exam1 = examPojo.stream().filter(id -> id.getId() == (examid))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		for (ExamPojo examModel1 : exam1) {
 			if (examModel1 != null) {
 
@@ -775,7 +774,7 @@ public class StaffDao implements StaffInterface {
 				List<UserPojo> userPojo = jdbcTemplate.query(select1, new ApprovingMapper());
 				List<UserPojo> user1 = userPojo.stream().filter(id -> id.getUserId() == userId)
 						.filter(roll1 -> roll1.getRoll().equals(student))
-						.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+						.filter(isActive -> isActive.isActive() == (true)).toList();
 				for (UserPojo userModel1 : user1) {
 					if (userModel1 != null) {
 
@@ -786,7 +785,7 @@ public class StaffDao implements StaffInterface {
 							List<ResultPojo> result1 = result.stream()
 									.filter(examId -> examId.getExamId() == (resultPojo.getExamId()))
 									.filter(userId1 -> userId1.getUserId() == (resultPojo.getUserId()))
-									.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+									.filter(isActive -> isActive.isActive() == (true)).toList();
 							for (ResultPojo resultModel1 : result1) {
 								if (resultModel1 != null) {
 									String update = "update result set marks =? where (exam_id=? and user_id=?)";
@@ -815,10 +814,10 @@ public class StaffDao implements StaffInterface {
 		List<ResultPojo> result = jdbcTemplate.query(select, new ResultMapper());
 		List<ResultPojo> result1 = result.stream().filter(examId -> examId.getExamId() == (resultPojo.getExamId()))
 				.filter(userId -> userId.getUserId() == (resultPojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<ResultPojo> result2 = result.stream().filter(examId -> examId.getExamId() == (resultPojo.getExamId()))
 				.filter(userId -> userId.getUserId() == (resultPojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (ResultPojo resultModel1 : result1) {
 			if (resultModel1 != null) {
 				String deactivate = "update result set is_active =false where (exam_id=? and user_id=?)";
@@ -842,9 +841,9 @@ public class StaffDao implements StaffInterface {
 		String select = selectResult;
 		List<ResultPojo> result = jdbcTemplate.query(select, new ResultMapper());
 		List<ResultPojo> result1 = result.stream().filter(examId -> examId.getExamId() == (resultPojo.getExamId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<ResultPojo> result2 = result.stream().filter(examId -> examId.getExamId() == (resultPojo.getExamId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (ResultPojo resultModel1 : result1) {
 			if (resultModel1 != null) {
 				String deactivate = "update result set is_active =false where exam_id=?";
@@ -868,9 +867,9 @@ public class StaffDao implements StaffInterface {
 		String select = selectResult;
 		List<ResultPojo> result = jdbcTemplate.query(select, new ResultMapper());
 		List<ResultPojo> result1 = result.stream().filter(userId -> userId.getUserId() == (resultPojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		List<ResultPojo> result2 = result.stream().filter(userId -> userId.getUserId() == (resultPojo.getUserId()))
-				.filter(isActive -> isActive.isActive() == (false)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (false)).toList();
 		for (ResultPojo resultModel1 : result1) {
 			if (resultModel1 != null) {
 				String deactivate = "update result set is_active =false where user_id=?";

@@ -2,8 +2,6 @@ package com.project.college_portal.dao;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -95,10 +93,10 @@ public class UserDao implements UserInterface {
 		List<UserPojo> userLogin = jdbcTemplate.query(login, new LoginMapper());
 
 		List<UserPojo> user1 = userLogin.stream().filter(email1 -> email1.getEmail().equals(email))
-				.filter(roll1 -> roll1.getRoll().equals(student)).collect(Collectors.toList());
+				.filter(roll1 -> roll1.getRoll().equals(student)).toList();
 
 		List<UserPojo> user2 = userLogin.stream().filter(email2 -> email2.getEmail().equals(email))
-				.filter(roll2 -> roll2.getRoll().equals(staff)).collect(Collectors.toList());
+				.filter(roll2 -> roll2.getRoll().equals(staff)).toList();
 
 		for (UserPojo userModel1 : user1) {
 			if (userModel1 != null) {
@@ -141,11 +139,11 @@ public class UserDao implements UserInterface {
 
 		List<UserPojo> user1 = userLogin.stream().filter(email1 -> email1.getEmail().equals(email))
 				.filter(phone1 -> phone1.getPhone().equals(phone)).filter(roll1 -> roll1.getRoll().equals(student))
-				.collect(Collectors.toList());
+				.toList();
 
 		List<UserPojo> user2 = userLogin.stream().filter(email2 -> email2.getEmail().equals(email))
 				.filter(phone2 -> phone2.getPhone().equals(phone)).filter(roll2 -> roll2.getRoll().equals(staff))
-				.collect(Collectors.toList());
+				.toList();
 
 		for (UserPojo userModel1 : user1) {
 			if (userModel1 != null) {
@@ -216,7 +214,7 @@ public class UserDao implements UserInterface {
 		String select = "Select id,roll,status,is_active from user";
 		List<UserPojo> user = jdbcTemplate.query(select, new ApprovingMapper());
 		List<UserPojo> user1 = user.stream().filter(id -> id.getUserId() == (userPojo.getUserId()))
-				.filter(roll1 -> roll1.getRoll().equals(student)).collect(Collectors.toList());
+				.filter(roll1 -> roll1.getRoll().equals(student)).toList();
 		for (UserPojo userModel : user1) {
 			LocalDate currentDate = LocalDate.now();
 			int year = currentDate.getYear();
@@ -366,7 +364,7 @@ public class UserDao implements UserInterface {
 		List<AttendancePojo> attendanceList = jdbcTemplate.query(select, new AttendanceMapper());
 		List<AttendancePojo> attendanceList1 = attendanceList.stream().filter(userid -> userid.getUserId() == (userId))
 				.filter(semesterid -> semesterid.getSemester() == (semester))
-				.filter(isActive -> isActive.isActive() == (true)).collect(Collectors.toList());
+				.filter(isActive -> isActive.isActive() == (true)).toList();
 		for (AttendancePojo attendanceModel1 : attendanceList1) {
 			if (attendanceModel1 != null) {
 				String select1 = "select user_id,semester,total_days,days_attended,days_leave,attendance,is_active from attendance where (is_active =true and user_id=? and semester=?)";

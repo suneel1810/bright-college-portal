@@ -173,7 +173,9 @@ public class HomeController {
 
 	// method to get exam form
 	@GetMapping(path = "/insertExamForm")
-	public String examForm(Model model) throws JsonProcessingException {
+	public String examForm(Model model, HttpSession session) throws JsonProcessingException, HigherAuthorityException {
+		int staffId = (int) session.getAttribute(sessionUserId);
+		staffService.checkHigherAuthority(staffId);
 		model.addAttribute(modelsubjectList, staffService.subjectList(model));
 		return "examForm";
 	}

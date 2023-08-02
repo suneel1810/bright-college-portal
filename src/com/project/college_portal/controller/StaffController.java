@@ -160,7 +160,7 @@ public class StaffController {
 	// method to add present
 	@GetMapping(path = "/addUpdatePresentbyone")
 	public String addOrUpdatePresentByOne(@RequestParam("userId") int userId,@RequestParam("semester") int semester, Model model)
-			throws UserIdException, JsonProcessingException {
+			throws UserIdException {
 		int value = staffService.addOrUpdatePresentByOne(userId,semester);
 		if (value == 1) {
 			return redirectAttendanceAdmin;
@@ -171,7 +171,7 @@ public class StaffController {
 	// method to add absent
 	@GetMapping(path = "/addUpdateAbsentbyone")
 	public String addOrUpdateAbsentByOne(@RequestParam("userId") int userId,@RequestParam("semester") int semester, Model model)
-			throws UserIdException, JsonProcessingException {
+			throws UserIdException {
 
 		int value = staffService.addOrUpdateAbsentByOne(userId,semester);
 		if (value == 1) {

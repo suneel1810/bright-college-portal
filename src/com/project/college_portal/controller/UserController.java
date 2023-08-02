@@ -73,7 +73,7 @@ public class UserController {
 	// method to get Login success
 	@PostMapping(path = "/loginSubmit")
 	public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model,
-			HttpSession session) throws InvalidMailIdException, JsonProcessingException {
+			HttpSession session) throws InvalidMailIdException {
 		UserPojo userPojo = new UserPojo();
 		userPojo.setEmail(email);
 		userPojo.setPassword(password);

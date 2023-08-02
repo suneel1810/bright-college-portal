@@ -60,7 +60,7 @@ public class UserService {
 	}
 
 	// method to set User Session By Id
-	public int setUserSessionById(int userId, HttpSession session) throws JsonProcessingException {
+	public int setUserSessionById(int userId, HttpSession session) {
 		return userDao.setUserSessionById(userId, session);
 	}
 
